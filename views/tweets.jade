@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1= title
+
+  #tweets
+
+  script
+    var tweetStream = io.connect('http://localhost:3000');
+
+    tweetStream.on('data', function(data) {
+      $('#tweets').prepend($('<div></div>').html(data.text));
+    });
