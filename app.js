@@ -8,7 +8,9 @@ var express = require('express')
   , http = require('http')
   , path = require('path');
 
-var app = express();
+var app = express()
+  , server = http.createServer(app)
+  , io = require('socket.io').listen(server);;
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -27,8 +29,14 @@ if ('development' == app.get('env')) {
 }
 
 // load routes
-routes.create(app);
+routes.create(app, io);
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+// development only
+if ('development' == app.get('env')) {
+  app.use(express.errorHandler());
+}
+
+
+server.listen(app.get('port'), function(){
+  console.log("Express server listening on port " + app.get('port'));
 });

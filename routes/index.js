@@ -1,4 +1,4 @@
-module.exports.create = function(app) {
+module.exports.create = function(app, io) {
   /*
    * Add routes here
    */
